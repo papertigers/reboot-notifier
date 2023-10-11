@@ -8,13 +8,12 @@ notification when the server first boots up.
 
 ```
 $ pfexec svccfg import smf/reboot-notifier.xml
-$ pfexec svccfg -s reboot-notifier setprop config/message = \"Server rebooted...\"
-$ pfexec svccfg -s reboot-notifier setprop config/user_token = real_user_token
-$ pfexec svccfg -s reboot-notifier setprop config/application_token = real_app_token
+$ pfexec svccfg -s reboot-notifier setprop start/user = mike
+$ pfexec svccfg -s reboot-notifier setprop start/group = mike
+$ pfexec svccfg -s reboot-notifier setprop config/file = /etc/reboot-notifier.toml
 $ pfexec svcadm refresh reboot-notifier
 $ pfexec svcadm enable reboot-notifier
 ```
 
-Note that the provided SMF service is using the `read_authorization` propval to
-hide sensitive configuration values. Refer to `smf_security(7)` for more
-information.
+Check out the [example-config.toml](example-config.toml) for all of the options
+needed to use `reboot-notifier`.

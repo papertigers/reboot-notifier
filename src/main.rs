@@ -1,8 +1,11 @@
-use std::{thread, time::Duration};
+use std::{path::PathBuf, thread, time::Duration};
 
 use anyhow::{bail, Result};
+use config::Config;
 use pushover_rs::{send_pushover_request, MessageBuilder};
 use structopt::StructOpt;
+
+mod config;
 
 // This is meant to be ran as an SMF transient service so returning OK is fine.
 const SMF_EXIT_OK: i32 = 0;
@@ -10,21 +13,18 @@ const SMF_EXIT_OK: i32 = 0;
 #[derive(Debug, StructOpt)]
 struct Opt {
     #[structopt(short, long, required = true)]
-    user_key: String,
-    #[structopt(short, long, required = true)]
-    application_token: String,
-    #[structopt(short, long, required = true)]
-    message: String,
+    config: PathBuf,
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
     let opt = Opt::from_args();
+    let config = Config::from_file(opt.config)?;
 
     let message = MessageBuilder::new(
-        &opt.user_key,
-        &opt.application_token,
-        &opt.message,
+        &config.user_key,
+        &config.application_token,
+        &config.message,
     )
     .set_priority(1)
     .build();

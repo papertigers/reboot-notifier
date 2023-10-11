@@ -13,10 +13,10 @@
     </dependency>
 
     <exec_method name='start' type='method'
-      exec='%{config/exec} -u %{config/user_token} -a %{config/application_token} -m %{config/message}'
+      exec='%{config/exec} -c %{config/file}'
       timeout_seconds='0'>
       <method_context security_flags='aslr'>
-        <method_credential user='nobody' group='nobody'
+        <method_credential user='root' group='root'
           privileges='basic,!proc_info,!proc_session'/>
       </method_context>
     </exec_method>
@@ -24,11 +24,8 @@
     <exec_method name='stop' type='method' exec=':kill' timeout_seconds='60'/>
 
     <property_group name='config' type='application'>
-      <propval name='read_authorization' type='astring' value='hidden' />
       <propval name='exec' type='astring' value='/opt/custom/bin/reboot-notifier' />
-      <propval name='user_token' type='astring' value='USERTOKENUSERTOKENUSERTOKEN' />
-      <propval name='application_token' type='astring' value='APPTOKENAPPTOKENAPPTOKEN' />
-      <propval name='message' type='astring' value='Server rebooted' />
+      <propval name='file' type='astring' value='/opt/custom/etc/reboot-notifier-config.toml' />
     </property_group>
 
     <property_group name='startd' type='framework'>
