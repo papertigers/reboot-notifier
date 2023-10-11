@@ -15,5 +15,5 @@ $ pfexec svcadm refresh reboot-notifier
 $ pfexec svcadm enable reboot-notifier
 ```
 
-Check out the [example-config.toml](example-config.toml) for all of the options
-needed to use `reboot-notifier`.
+Check out [example-config.toml](example-config.toml) for all of the config
+options needed to use `reboot-notifier`.
